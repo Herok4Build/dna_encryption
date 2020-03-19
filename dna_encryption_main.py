@@ -9,7 +9,10 @@
 #reference: https://docs.python.org/2/library/functions.html#bin
 #reference: https://stackoverflow.com/questions/227459/how-to-get-the-ascii-value-of-a-character
 #https://stackoverflow.com/questions/7396849/convert-binary-to-ascii-and-vice-versa author jfs
+# https://stackoverflow.com/questions/21205836/generating-random-sequences-of-dna
 import textwrap
+import random
+from random import choice
 
 def inputStringDNA():#Function for generating String from user input
     string_DNA = input("Type in the DNA String.\n")
@@ -67,16 +70,40 @@ def charArrayConversion(target_char_arr):# Function for transforming the
     print("Here is the binary string of the message: ", binary_string)
     return binary_string
 
+def messageToBinary(messageStr):
+    messageStrBinary = bin(int.from_bytes(messageStr.encode(), 'big'))
+    print("Message: " +messageStr+ "; now converted to: " +messageStrBinary+ "; in binary.")
+    return messageStrBinary
+
 def messageGenerator():
     print("Input message.")
     message = input()
-    return message
+    newBinaryMessage = messageToBinary(message)
+    return newBinaryMessage
 
+def genFirstKey():
+    randKey = randrange(1,20,1)
+    print("First key generated", randKey)
+    binaryRandKey = messageToBinary(randKey)
+    return binaryRandKey
+
+def binaryAddition(binaryArg1, binaryArg2):
+    binarySum = bin(binaryArg1 + binaryArg2)
+    return binarySum
+
+def randomDNAConstruct():
+    dnaStr = ""
+    for index in range(100000):
+        dnaStr += choice("ACTG")
+    return dnaStr
 
 def main():
     dnaDict = {"A":"00", "C": "01", "G": "10", "T": "11"}
-    startDNA = inputStringDNA()
-    message = messageGenerator()
+    startDNA = randomDNAConstruct()
+    biMessage = messageGenerator()
     binary_DNA = convertDNABinary(startDNA,dnaDict)
+    firstKeyForEncryption = genFirstKey()
+
+
 
 main()
