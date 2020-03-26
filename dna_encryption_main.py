@@ -39,7 +39,7 @@ def convertDNABinary(strDNA, nucleicDict):
     binary_list = convertDNAList(list_of_acids, nucleicDict)# Transforms the list of DNA character elements to binary
     binary_str_DNA = ""
     for index in binary_list:
-        binary_str_DNA = binary_str_DNA + index# Puts all the DNA characters back to one string as binary
+        binary_str_DNA = binary_str_DNA + index# Puts all the DNA binary characters back to one string as binary
     print("The current binary DNA List Argument: ", binary_str_DNA)
     return binary_str_DNA
 
@@ -57,6 +57,28 @@ def convertDNAList(list_arg, nucleicDict):
     print("The current DNA List Argument: ", binary_bases_list) # binary list of the DNA bases that were retrieved
     return binary_bases_list # Returns the list of binary bases.
 
+def convertBinaryToDNA(binaryStrArg,binaryNucleicDict):
+    binaryStrArgList = textwrap.wrap(binaryStrArg, 2)
+    dnaCharList = convertBinaryDNAList(binaryStrArgList,binaryNucleicDict)
+    dnaCharStr = ""
+    for element in dnaCharList:
+        dnaCharStr = dnaCharStr + element
+    print("The current DNA character string: ", dnaCharStr)
+    return dnaCharStr
+
+def convertBinaryDNAList(binaryStrArgList,binaryNucleicDict):
+    dna_bases_list = []
+    for element in binaryStrArgList:
+        if element in binaryNucleicDict:
+            dna_bases_list.append(binaryNucleicDict[element])
+        else:
+            print(element)
+            print("Anomaly present.")
+            print("Exitting now!")
+            exit()
+    print("The current DNA Characters List: ", dna_bases_list)
+    return dna_bases_list
+
 def charArrayConversion(target_char_arr):# Function for transforming the
     charlist = []
     for index in range(len(target_char_arr)):
@@ -71,52 +93,68 @@ def charArrayConversion(target_char_arr):# Function for transforming the
     return binary_string
 
 def messageToBinary(messageStr):
-    messageStrBinary = bin(int.from_bytes(messageStr.encode(), 'big'))
+    print("\n")
+    print(messageStr)
+    messageStrBinary = bin(int.from_bytes(messageStr.encode(), "big"))
     print("Message: " +messageStr+ "; now converted to: " +messageStrBinary+ "; in binary.")
     newMessageStrBinary = removeBytePrefix(messageStrBinary)
     listOfMessageStrBinary = textwrap.wrap(newMessageStrBinary,8)
+    print("A wonderful binary construct: ")
+    print(listOfMessageStrBinary)
+    for indexString in listOfMessageStrBinary:
+        indexString = removeBytePrefix(indexString)
     return listOfMessageStrBinary
 
 def messageGenerator():
     print("Input message.")
     message = input()
+    print("Here is the inputted message.")
+    print(message)
     newBinaryMessage = messageToBinary(message)
+    print("There is the indicated message: ")
+    print(newBinaryMessage)
     return newBinaryMessage
 
 def genFirstKey():
-    randKey = randrange(1,20,1)
+    randKey = random.randrange(1,20,1)
     print("First key generated", randKey)
-    binaryRandKey = messageToBinary(randKey)
+    binaryRandKey = keyToBinary(randKey)
     return binaryRandKey
 
+def keyToBinary(numberKey):
+    binaryTransform = f'{numberKey:08b}'
+    return binaryTransform
+
 def binaryAddition(binaryArg1, binaryArg2):
-    binarySum = bin(binaryArg1 + binaryArg2)
+    binarySum = bin(int(binaryArg1,2) + int(binaryArg2,2))
     return binarySum
 
 def randomDNAConstruct():
     dnaStr = ""
-    for index in range(100000):
+    for index in range(200000):
         dnaStr += choice("ACTG")
     return dnaStr
 
 def removeBytePrefix(byteStr):
     if "0b" in byteStr:
-        str_byte_prefix_removed = byteStr[2:]
+        str_byte_prefix_removed = byteStr[0]+byteStr[2:]
         return str_byte_prefix_removed
     else:
-        continue;
+        return byteStr
 
 def encryptMessage(firstKey, plaintextMessageList):
+    print("We made it.")
     firstKey_prefix_removed = removeBytePrefix(firstKey)
     cumulativeMessageList = []
-    currentResult = ""
-    currentResult = sumbinaryAddition(firstKey_prefix_removed,plaintextMessageList[0])
-    cumulativeMessageList.append(currentResult)
+    print(plaintextMessageList[0])
+    firstResult = binaryAddition(firstKey_prefix_removed,plaintextMessageList[0])
+    cumulativeMessageList.append(firstResult)
+    currentResult = firstResult
     for indexNumber in range(len(plaintextMessageList)-1):
         if indexNumber == 0:
             pass
         else:
-            currentResult = sumbinaryAddition(currentResult,plaintextMessageList[indexNumber])
+            currentResult = binaryAddition(currentResult,plaintextMessageList[indexNumber])
             cumulativeMessageList.append(currentResult)
     return cumulativeMessageList
 
@@ -126,17 +164,33 @@ def listToString(strInListArg):
         compiledStringVar+= element
     return compiledStringVar
 
-def insertBitElements(binaryDNA, encryptedMessageBinary):
-    randomKey2 = randrange(1,20,1)
+def insertBitElements(binaryDNA, encryptedMessageBinaryPrefix):
+    randomKey2 = random.randrange(1,20,1)
+    encryptedMessageBinaryPrefixList = textwrap.wrap(encryptedMessageBinaryPrefix,1)
+    for element in encryptedMessageBinaryPrefixList:
+        if element == "b":
+            encryptedMessageBinaryPrefixList.remove(element)
+    print("Binary formatted list that may have errors: ")
+    print(encryptedMessageBinaryPrefixList)
+    encryptedMessageBinary = listToString(encryptedMessageBinaryPrefixList)
     brokenBinaryDNA = textwrap.wrap(binaryDNA, randomKey2)
     brokenEncryptedMessageBinary = textwrap.wrap(encryptedMessageBinary, 1)
-    newEncryptedBinaryStr= ""
+    encryptedStrList =[]
     for indexPosition in range(len(brokenBinaryDNA)-1):
-        if brokenEncryptedMessageBinary[indexPosition] != null:
+        if indexPosition < len(brokenEncryptedMessageBinary):
+            print(encryptedMessageBinary)
+            print("List elements of DNA and Encrypted message:\n")
+            print(brokenBinaryDNA[indexPosition])
+            print(brokenEncryptedMessageBinary[indexPosition])
+            print("\n")
             temporaryStr = brokenBinaryDNA[indexPosition] + brokenEncryptedMessageBinary[indexPosition]
-            newEncryptedBinaryStr += temporaryStr
+            encryptedStrList.append(temporaryStr)
+            print(encryptedStrList)
         else:
-            break
+            encryptedStrList.append(brokenBinaryDNA[indexPosition])
+    newEncryptedBinaryStr= listToString(encryptedStrList)
+    print("NewEncrypted Message:")
+    print(newEncryptedBinaryStr)
     return randomKey2, newEncryptedBinaryStr
 
     #maxLimit = range(len(binaryDNA))-1
@@ -147,14 +201,18 @@ def insertBitElements(binaryDNA, encryptedMessageBinary):
 
 def main():
     dnaDict = {"A":"00", "C": "01", "G": "10", "T": "11"}
+    binaryDnaDict = {"00":"A", "01": "C", "10": "G", "11": "T"}
     startDNA = randomDNAConstruct()
     binMessage = messageGenerator()
     binary_DNA = convertDNABinary(startDNA,dnaDict)
     firstKeyForEncryption = genFirstKey()
     encryptedBinaryList = encryptMessage(firstKeyForEncryption, binMessage)
     encryptedBinaryString = listToString(encryptedBinaryList)
-    encryptedBinaryMessageComplete, secondKeyForEncryption = insertBitElements(binary_DNA, encryptedBinaryString)
-    print("The final encrypted message is:" + encryptedBinaryMessageComplete)
+    secondKeyForEncryption,encryptedBinaryMessageComplete = insertBitElements(binary_DNA, encryptedBinaryString)
+    print("The final encrypted message in binary is:" + str(encryptedBinaryMessageComplete))
+    fullDNAEncryptedCharacterString = convertBinaryToDNA(encryptedBinaryMessageComplete,binaryDnaDict)
+    print("Full DNA Xharacter Encrypted String: "+fullDNAEncryptedCharacterString)
+
 
 
 
