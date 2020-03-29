@@ -10,6 +10,8 @@
 #reference: https://stackoverflow.com/questions/227459/how-to-get-the-ascii-value-of-a-character
 #https://stackoverflow.com/questions/7396849/convert-binary-to-ascii-and-vice-versa author jfs
 # https://stackoverflow.com/questions/21205836/generating-random-sequences-of-dna
+# https://realpython.com/python-f-strings/
+# https://www.geeksforgeeks.org/python-bitwise-operators/
 import textwrap
 import random
 from random import choice
@@ -100,6 +102,8 @@ def messageToBinary(messageStr):
     messageStrBinary = bin(int.from_bytes(messageStr.encode(), "big"))
     print("Message: " +messageStr+ "; now converted to: " +messageStrBinary+ "; in binary.")
     newMessageStrBinary = removeBytePrefix(messageStrBinary)
+    print("The length of the message in binary:")
+    print(len(newMessageStrBinary))
     listOfMessageStrBinary = textwrap.wrap(newMessageStrBinary,8)
     print("A wonderful binary construct: ")
     print(listOfMessageStrBinary)
@@ -172,6 +176,8 @@ def convertStrListToIntList(strListArg):
 
 def formatBinaryStringList(binaryStrListArg):
     formattedBinaryStrListArg = []
+    print("Is the binary String Argument being passed corrctly:")
+    print(binaryStrListArg)
     for element in binaryStrListArg:
         newFormattedElementInt = int(element,2)
         print(element)
@@ -181,6 +187,8 @@ def formatBinaryStringList(binaryStrListArg):
         print("New string value is here:")
         print(newBinaryReturnString)
         formattedBinaryStrListArg.append(newBinaryReturnString)
+    print("This is the formatted binary eleements within a list:")
+    print(formattedBinaryStrListArg)
     return formattedBinaryStrListArg
 
 
@@ -199,6 +207,8 @@ def encryptMessage(firstKey, plaintextMessageList):
         else:
             currentResult = binaryXOR(currentResult,plaintextMessageList[indexNumber])
             cumulativeMessageList.append(currentResult)
+    print("ehat happened to the elements of the list:")
+    print(cumulativeMessageList)
     print("Checking values in List of XOR errors: ")
     cumulativeMessageListFormatted = formatBinaryStringList(cumulativeMessageList)
     print(cumulativeMessageListFormatted)
@@ -207,16 +217,21 @@ def encryptMessage(firstKey, plaintextMessageList):
 def decryptMessage(firstKey, encryptedMessageList):
     print("Decryption has started: ")
     firstKey_prefix_removed = removeBytePrefix(firstKey)
+    encryptedMessagePassStr = listToString(encryptedMessageList)
+    encryptedMessageList = textwrap.wrap(encryptedMessagePassStr,8)
     cumulativeMessageList = []
-    print(encryptedMessageList[0])
+    print("WHat we are decrypting: ")
+    print(encryptedMessageList)
     firstResult = binaryXOR(firstKey_prefix_removed,encryptedMessageList[0])
     cumulativeMessageList.append(firstResult)
-    currentResult = firstResult
+    currentResult = ""
     for indexNumber in range(len(encryptedMessageList)-1):
         if indexNumber == 0:
             pass
         else:
-            currentResult = binaryXOR(currentResult,encryptedMessageList[indexNumber])
+            currentResult = binaryXOR(encryptedMessageList[indexNumber],encryptedMessageList[indexNumber-1])
+            print("XOR Result for the decryption path: ")
+            print(currentResult)
             cumulativeMessageList.append(currentResult)
     cumulativeMessageListFormatted = formatBinaryStringList(cumulativeMessageList)
     print("Checking for any misformatting issues in list: ")
@@ -286,13 +301,13 @@ def extractBitElements(decryptedMessageBinaryPrefix, secondEncryptionKey):
     #maxLimit = range(len(binaryDNA))-1
     #for index in range(0,maxLimit,randomKey2):
 
-def convertDecryptedStrToMessage(extractedSignificantBitMessageStrArg):
+def convertDecryptedStrToMessage(extractedSignificantBitMessageStrArg, lastPositionForDecryption):
     eightBitByteElementsList = textwrap.wrap(extractedSignificantBitMessageStrArg,8)
     print("Broken list of the byte elements:")
     print(eightBitByteElementsList)
     messageCharacterList = []
-    for binaryElement in eightBitByteElementsList:
-        newlyGeneratedInteger = convertStringToInteger(binaryElement)
+    for binaryElement in range(lastPositionForDecryption):#eightBitByteElementsList:
+        newlyGeneratedInteger = convertStringToInteger(eightBitByteElementsList[binaryElement])
         print("Checking if integer Conversion worked")
         print(newlyGeneratedInteger)
         characterRetrieve = newlyGeneratedInteger.to_bytes((newlyGeneratedInteger.bit_length()+7) // 8, "big").decode()
@@ -310,22 +325,27 @@ def main():
     startDNA = randomDNAConstruct()
     binMessage = messageGenerator()
     binary_DNA = convertDNABinary(startDNA,dnaDict)
+    print("Length of Binary DNA:")
+    print(len(binary_DNA))
     firstKeyForEncryption = genFirstKey()
     encryptedBinaryList = encryptMessage(firstKeyForEncryption, binMessage)
+    decryptLimit = (len(encryptedBinaryList))
     encryptedBinaryString = listToString(encryptedBinaryList)
     secondKeyForEncryption,encryptedBinaryMessageComplete = insertBitElements(binary_DNA, encryptedBinaryString)
     print("The final encrypted message in binary is:" + str(encryptedBinaryMessageComplete))
     fullDNAEncryptedCharacterString = convertBinaryToDNA(encryptedBinaryMessageComplete,binaryDnaDict)
     print("Full DNA Xharacter Encrypted String: "+fullDNAEncryptedCharacterString)
-    main2(firstKeyForEncryption, secondKeyForEncryption, fullDNAEncryptedCharacterString, dnaDict, binaryDnaDict)
+    main2(firstKeyForEncryption, secondKeyForEncryption, fullDNAEncryptedCharacterString, dnaDict, binaryDnaDict,decryptLimit)
 
-def main2(firstEncryptionKey,secondEncryptionKey,encryptedDNAMessage, dnaDict, binaryDNAdict):
+def main2(firstEncryptionKey,secondEncryptionKey,encryptedDNAMessage, dnaDict, binaryDNAdict, limitationForDecryption):
+    print("Length of Encrypted DNA Message:")
+    print(len(encryptedDNAMessage))
     encryptedBitsFromDNA = convertDNABinary(encryptedDNAMessage, dnaDict)
     significantBitExtractionList = extractBitElements(encryptedBitsFromDNA, secondEncryptionKey)
     extractedSignificantBitMessageStr = decryptMessage(firstEncryptionKey, significantBitExtractionList)
     print("The extracted message:")
     print(extractedSignificantBitMessageStr)
-    finalDecryptedMessage = convertDecryptedStrToMessage(extractedSignificantBitMessageStr)
+    finalDecryptedMessage = convertDecryptedStrToMessage(extractedSignificantBitMessageStr,limitationForDecryption)
     print("Final result of decryption: ")
     print(finalDecryptedMessage)
 
