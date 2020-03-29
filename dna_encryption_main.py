@@ -13,7 +13,6 @@
 # https://realpython.com/python-f-strings/
 # https://www.geeksforgeeks.org/python-bitwise-operators/
 
-#When inputting message, pad with an extra character. Bug to be fixed later.
 import textwrap
 import random
 from random import choice
@@ -118,7 +117,8 @@ def messageGenerator():
     message = input()
     print("Here is the inputted message.")
     print(message)
-    newBinaryMessage = messageToBinary(message)
+    paddedmessage = message+ "x"
+    newBinaryMessage = messageToBinary(paddedmessage)
     print("There is the indicated message: ")
     print(newBinaryMessage)
     return newBinaryMessage
