@@ -55,9 +55,10 @@ def main():
 
 
 #main()
-print("The binary value of 128.\n")
+print("The binary value of yes.\n")
 binary_value = bin(int.from_bytes("yes".encode(), "big"))
 print(binary_value)
 binary_value = int(binary_value, 2)
-binary_retrieve =binary_value.to_bytes((binary_value.bit_length()+7) // 8, "big").decode()
+print(binary_value)
+binary_retrieve = binary_value.to_bytes((binary_value.bit_length()+7) // 8, "big").decode()
 print(binary_retrieve)
