@@ -10,4 +10,6 @@ Kevin Benton Jr.
 Matthew Hill
 Thomas Johnson III
 
-
+##Files:
+### dna_encryption_main.py
+The prototype for dna encryption method on this github repository. Input your message and watch said message be encrypted and decrypted.
