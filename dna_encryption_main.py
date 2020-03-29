@@ -12,6 +12,8 @@
 # https://stackoverflow.com/questions/21205836/generating-random-sequences-of-dna
 # https://realpython.com/python-f-strings/
 # https://www.geeksforgeeks.org/python-bitwise-operators/
+
+#When inputting message, pad with an extra character. Bug to be fixed later.
 import textwrap
 import random
 from random import choice
