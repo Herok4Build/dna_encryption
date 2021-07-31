@@ -60,7 +60,7 @@ def convertDNAList(list_arg, nucleicDict):
             print("Anomaly present.")
             #print("Exitting now!")
             #exit()# Immediately ends the script upon the detection of an error
-            binary_bases_list.append(nucleicDict["00"])
+            binary_bases_list.append(randomDNAConstructSingleChar())
     print("The current DNA List Argument: ", binary_bases_list) # binary list of the DNA bases that were retrieved
     return binary_bases_list # Returns the list of binary bases.
 
@@ -83,7 +83,7 @@ def convertBinaryDNAList(binaryStrArgList,binaryNucleicDict):
             print("Anomaly present.")
             #print("Exitting now!")
             #exit()
-            dna_bases_list.append(binaryNucleicDict[element+"0"])
+            dna_bases_list.append(binaryNucleicDict[element+randomBinaryDigit()])
     print("The current DNA Characters List: ", dna_bases_list)
     return dna_bases_list
 
@@ -163,9 +163,21 @@ def convertStringToInteger(suspectedStrInsteadOfInteger):
 
 def randomDNAConstruct():
     dnaStr = ""
-    for index in range(300):
+    for index in range(5000):
         dnaStr += choice("ACTG")
     return dnaStr
+
+def randomDNAConstructSingleChar():
+    dna_char = ""
+    for index in range(1):
+        dna_char += choice("ACTG")
+    return dna_char
+
+def randomBinaryDigit():
+    bin_char = ""
+    for index in range(1):
+        bin_char += choice("01")
+    return bin_char
 
 def removeBytePrefix(byteStr):
     if "0b" in byteStr:
@@ -207,7 +219,7 @@ def encryptMessage(firstKey, plaintextMessageList):
     firstResult = binaryXOR(firstKey_prefix_removed,plaintextMessageList[0])
     cumulativeMessageList.append(str(firstResult))
     currentResult = firstResult
-    for indexNumber in range(len(plaintextMessageList)):
+    for indexNumber in range(len(plaintextMessageList)-1):
         if indexNumber == 0:
             pass
         else:
@@ -215,9 +227,11 @@ def encryptMessage(firstKey, plaintextMessageList):
             cumulativeMessageList.append(currentResult)
     print("What happened to the elements of the list:")
     print(cumulativeMessageList)
+    """
     with open("./binary_messagelist.txt","w") as filedesignation:
         space_str = " "
         filedesignation.write(space_str.join(cumulativeMessageList))
+    """
     print("Checking values in List of XOR errors: ")
     cumulativeMessageListFormatted = formatBinaryStringList(cumulativeMessageList)
     print(cumulativeMessageListFormatted)
@@ -234,7 +248,7 @@ def decryptMessage(firstKey, encryptedMessageList):
     firstResult = binaryXOR(firstKey_prefix_removed,encryptedMessageList[0])
     cumulativeMessageList.append(firstResult)
     currentResult = ""
-    for indexNumber in range(len(encryptedMessageList)):
+    for indexNumber in range(len(encryptedMessageList)-1):
         if indexNumber == 0:
             pass
         else:
@@ -315,7 +329,7 @@ def convertDecryptedStrToMessage(extractedSignificantBitMessageStrArg, lastPosit
     print("Broken list of the byte elements:")
     print(eightBitByteElementsList)
     messageCharacterList = []
-    for binaryElement in range(lastPositionForDecryption+1):#eightBitByteElementsList:
+    for binaryElement in range(lastPositionForDecryption):#eightBitByteElementsList:
         newlyGeneratedInteger = convertStringToInteger(eightBitByteElementsList[binaryElement])
         print("Checking if integer Conversion worked")
         print(newlyGeneratedInteger)
