@@ -22,10 +22,14 @@ def splitString(strArg):#Function for splitting string into separate parts
     print(list_of_str)
     return list_of_str
 
+"""
+convertDNABinary function converts the amino acids strings to binary digits
+as specified by ehat is in nucleicDict argument
+"""
 def convertDNABinary(strDNA, nucleicDict):
-    separation = 1
-    list_of_acids = textwrap.wrap(strDNA, separation)
-    binary_list = convertDNAList(list_of_acids, nucleicDict)
+    separation = 1#The separation of each character
+    list_of_acids = textwrap.wrap(strDNA, separation)#Breaking each character apart and storing within a list
+    binary_list = convertDNAList(list_of_acids, nucleicDict)#Converting the characters to their equivalent in the binary pairings specified in the nucleicDict argument
     binary_str_DNA = ""
     for index in range(binary_list):
         binary_str_DNA = binary_str_DNA + index
