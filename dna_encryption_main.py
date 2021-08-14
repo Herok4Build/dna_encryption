@@ -100,57 +100,57 @@ def charArrayConversion(target_char_arr):# Function for transforming the charact
     print("Here is the binary string of the message: ", binary_string)
     return binary_string
 
-def messageToBinary(messageStr):
+def messageToBinary(messageStr):#The function messageToBinary is used to convert the message to its binary equivalent
     print("\n")
     print(messageStr)
-    messageStrBinary = bin(int.from_bytes(messageStr.encode(), "big"))
+    messageStrBinary = bin(int.from_bytes(messageStr.encode(), "big"))#Encode the message to binary
     print("Message: " +messageStr+ "; now converted to: " +messageStrBinary+ "; in binary.")
-    newMessageStrBinary = removeBytePrefix(messageStrBinary)
+    newMessageStrBinary = removeBytePrefix(messageStrBinary)#Removes the unnecessary prefix
     print("The length of the message in binary:")
     print(len(newMessageStrBinary))
-    listOfMessageStrBinary = textwrap.wrap(newMessageStrBinary,8)
+    listOfMessageStrBinary = textwrap.wrap(newMessageStrBinary,8)#Separate the binary character eauivalents of the message
     print("A wonderful binary construct: ")
     print(listOfMessageStrBinary)
-    for indexString in listOfMessageStrBinary:
+    for indexString in listOfMessageStrBinary:#Get the element from the list of binary strings
         indexString = removeBytePrefix(indexString)
     return listOfMessageStrBinary
 
-def messageGenerator():
+def messageGenerator():#Function for inputting a message from the user
     print("Input message.")
-    message = input()
+    message = input()#Input the message
     print("Here is the inputted message.")
     print(message)
-    paddedmessage = message+ " "
-    newBinaryMessage = messageToBinary(paddedmessage)
+    paddedmessage = message+ " "#Pads the message with an extra space
+    newBinaryMessage = messageToBinary(paddedmessage)#Convert the inputted the message to binary equivalent
     print("There is the indicated message: ")
     print(newBinaryMessage)
     return newBinaryMessage
 
-def genFirstKey():
-    randKey = random.randrange(1,20,1)
+def genFirstKey():#Generates the first key for the encryption
+    randKey = random.randrange(1,20,1)#Generates a random number between 1 and 20
     print("First key generated", randKey)
-    binaryRandKey = keyToBinary(randKey)
+    binaryRandKey = keyToBinary(randKey)#Co0nversts the key to binary
     return binaryRandKey
 
-def keyToBinary(numberKey):
-    binaryTransform = f'{numberKey:08b}'
+def keyToBinary(numberKey):# The keyToBinary function converts the generated key to its binary equivalent
+    binaryTransform = f'{numberKey:08b}'#Formatting the binary representation
     return binaryTransform
 
-def binaryXOR(binaryArg1, binaryArg2):
+def binaryXOR(binaryArg1, binaryArg2):#Does the Binary XOR operation
     print("The value fo the first argument that is binary: ")
-    binaryArgInteger1 = convertStringToInteger(binaryArg1)
+    binaryArgInteger1 = convertStringToInteger(binaryArg1)#Converts the first binary argument to its integer equivalent
     print(binaryArg1)
     print(type(binaryArg1))
     print(binaryArgInteger1)
     print("The value of the second argument that is binary: ")
-    binaryArgInteger2 = convertStringToInteger(binaryArg2)
+    binaryArgInteger2 = convertStringToInteger(binaryArg2)#Converts second binary argument to its integer equivalent
     print(binaryArg2)
     print(type(binaryArg2))
     print(binaryArgInteger2)
-    integerXORResult = binaryArgInteger1 ^ binaryArgInteger2
+    integerXORResult = binaryArgInteger1 ^ binaryArgInteger2#Get the XOR result from the first binary argument and second binary argument
     print("The XOR Result: ")
     print(integerXORResult)
-    binaryXORResult = bin(integerXORResult)
+    binaryXORResult = bin(integerXORResult)#Get the binary equivalent of the XOR result
     print(binaryXORResult)
     return binaryXORResult
 
