@@ -64,18 +64,18 @@ def convertDNAList(list_arg, nucleicDict):
     print("The current DNA List Argument: ", binary_bases_list) # binary list of the DNA bases that were retrieved
     return binary_bases_list # Returns the list of binary bases.
 
-def convertBinaryToDNA(binaryStrArg,binaryNucleicDict):
-    binaryStrArgList = textwrap.wrap(binaryStrArg, 2)
-    dnaCharList = convertBinaryDNAList(binaryStrArgList,binaryNucleicDict)
-    dnaCharStr = ""
-    for element in dnaCharList:
+def convertBinaryToDNA(binaryStrArg,binaryNucleicDict):# The function convertBinaryToDNA is used to convert the binary pairings into the respective nucleic acids
+    binaryStrArgList = textwrap.wrap(binaryStrArg, 2)#Separates each pairing of binary digits
+    dnaCharList = convertBinaryDNAList(binaryStrArgList,binaryNucleicDict)#Acquiring the nucleic acids as one complete nucleic acid string
+    dnaCharStr = ""#Placeholder string
+    for element in dnaCharList:#For each nucleic acid, add them eo a single common string
         dnaCharStr = dnaCharStr + element
     print("The current DNA character string: ", dnaCharStr)
     return dnaCharStr
 
-def convertBinaryDNAList(binaryStrArgList,binaryNucleicDict):
-    dna_bases_list = []
-    for element in binaryStrArgList:
+def convertBinaryDNAList(binaryStrArgList,binaryNucleicDict):#The converBinaryDNAList function takes the list of binary digits to convert each pairing to a nucliec acid and checking to make sure that if anomalies are present, a temporary fix is applied
+    dna_bases_list = []#The list is initiated
+    for element in binaryStrArgList:#
         if element in binaryNucleicDict:
             dna_bases_list.append(binaryNucleicDict[element])
         else:
@@ -161,9 +161,12 @@ def convertStringToInteger(suspectedStrInsteadOfInteger):
     else:
         return suspectedStrInsteadOfInteger
 
-def randomDNAConstruct():
+def randomDNAConstruct(length_of_message):
     dnaStr = ""
-    for index in range(5000):
+    r_multiplier = random.randrange(21,100,1)
+    total_random_dna_size = length_of_message *r_multiplier
+    random_dna_length = random.randrange(length_of_message,total_random_dna_size,1)
+    for index in range(total_random_dna_size):
         dnaStr += choice("ACTG")
     return dnaStr
 
@@ -345,8 +348,8 @@ def convertDecryptedStrToMessage(extractedSignificantBitMessageStrArg, lastPosit
 def main():
     dnaDict = {"A":"00", "C": "01", "G": "10", "T": "11"}
     binaryDnaDict = {"00":"A", "01": "C", "10": "G", "11": "T"}
-    startDNA = randomDNAConstruct()
     binMessage = messageGenerator()
+    startDNA = randomDNAConstruct(len(binMessage))
     binary_DNA = convertDNABinary(startDNA,dnaDict)
     print("Length of Binary DNA:")
     print(len(binary_DNA))
