@@ -75,28 +75,28 @@ def convertBinaryToDNA(binaryStrArg,binaryNucleicDict):# The function convertBin
 
 def convertBinaryDNAList(binaryStrArgList,binaryNucleicDict):#The converBinaryDNAList function takes the list of binary digits to convert each pairing to a nucliec acid and checking to make sure that if anomalies are present, a temporary fix is applied
     dna_bases_list = []#The list is initiated
-    for element in binaryStrArgList:#
-        if element in binaryNucleicDict:
-            dna_bases_list.append(binaryNucleicDict[element])
+    for element in binaryStrArgList:#For each element within the binary digits pairing list
+        if element in binaryNucleicDict:#Going through each pairing of binary digits
+            dna_bases_list.append(binaryNucleicDict[element])#Appending the binary pairings to a list
         else:
             print(element)
             print("Anomaly present.")
             #print("Exitting now!")
             #exit()
-            dna_bases_list.append(binaryNucleicDict[element+randomBinaryDigit()])
+            dna_bases_list.append(binaryNucleicDict[element+randomBinaryDigit()])#Appending then nucleic bases
     print("The current DNA Characters List: ", dna_bases_list)
     return dna_bases_list
 
-def charArrayConversion(target_char_arr):# Function for transforming the
-    charlist = []
-    for index in range(len(target_char_arr)):
-        num_charlist.append(bin(int.from_bytes(target_char_arr[index].encode(), "big")))
-    for index in range(len(charlist)):
-        binary_val = bin(index)
+def charArrayConversion(target_char_arr):# Function for transforming the character tothe byte form
+    charlist = []#The list is created
+    for index in range(len(target_char_arr)):#Going through each char in the list
+        num_charlist.append(bin(int.from_bytes(target_char_arr[index].encode(), "big")))#Encoding the char to its byte form
+    for index in range(len(charlist)):#Going through each index of the list
+        binary_val = bin(index)#Now getting the binary format into a readable, manipulable format
         #index = binary_val[2:]
-    binary_string =""
-    for index in range(len(charlist)):
-        binary_string = binarystring + index
+    binary_string =""#Placeholder string
+    for index in range(len(charlist)):#Going through the elements of thhe list
+        binary_string = binarystring + index#Appending the binary numbers
     print("Here is the binary string of the message: ", binary_string)
     return binary_string
 
